@@ -11,7 +11,15 @@ npm install
 npm run dev
 ```
 
-Al igual que la app de React, este cliente espera encontrar el servidor Socket.io en http://localhost:3001.
+Al igual que la app de React, este cliente espera encontrar el servidor Socket.io en `http://localhost:3001`.
+
+Para producción, configurar `VITE_SOCKET_URL` con la URL pública del backend.
+
+Ejemplo:
+
+```bash
+VITE_SOCKET_URL=https://tu-backend.onrender.com
+```
 
 ## Estructura principal
 
@@ -46,4 +54,4 @@ También hay una bandera de inicialización para evitar listeners duplicados si 
 
 ## Mejoras pendientes
 
-Igual que en React, si esto siguiera evolucionando movería la URL del socket a configuración por entorno y endurecería un poco más la validación de mensajes antes de emitirlos o mostrarlos.
+Si esto siguiera evolucionando endurecería un poco más la validación de mensajes antes de emitirlos o mostrarlos.

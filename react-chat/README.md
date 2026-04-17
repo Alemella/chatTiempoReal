@@ -11,7 +11,15 @@ npm install
 npm run dev
 ```
 
-Por defecto la aplicación se conecta a http://localhost:3001, así que el servidor Socket.io tiene que estar levantado antes.
+Por defecto la aplicación se conecta a `http://localhost:3001`, así que el servidor Socket.io tiene que estar levantado antes.
+
+Para producción, configurar `VITE_SOCKET_URL` con la URL pública del backend.
+
+Ejemplo:
+
+```bash
+VITE_SOCKET_URL=https://tu-backend.onrender.com
+```
 
 ## Estructura principal
 
@@ -53,4 +61,4 @@ Además se guarda el historial en localStorage para que al recargar no se pierda
 
 ## Mejoras pendientes
 
-Si esto pasara de prueba técnica a proyecto real, lo primero que ajustaría sería mover la URL del socket a variables de entorno y hacer una limpieza de listeners más fina usando callbacks nombrados en lugar de hacer off solo por nombre de evento.
+Si esto pasara de prueba técnica a proyecto real, haría una limpieza de listeners más fina usando callbacks nombrados en lugar de hacer off solo por nombre de evento.

@@ -1,12 +1,18 @@
 const { Server } = require("socket.io");
 
-const io = new Server(3001, {
+const PORT = process.env.PORT || 3001;
+const configuredOrigins = (process.env.CLIENT_ORIGIN || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const io = new Server(PORT, {
   cors: {
-    origin: "*"
+    origin: configuredOrigins.length > 0 ? configuredOrigins : "*"
   }
 });
 
-console.log("Socket server running on port 3001");
+console.log(`Socket server running on port ${PORT}`);
 
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);

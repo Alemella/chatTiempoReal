@@ -44,6 +44,26 @@ npm run dev
 
 Con el servidor corriendo, lo práctico es abrir React en una ventana y Vue en otra. Así se puede comprobar que un mensaje enviado desde un cliente aparece en el otro sin necesidad de recargar la pagina.
 
+## Despliegue (Vercel + Render)
+
+Si el frontend se despliega en Vercel y el backend en Render, no se puede usar `http://localhost:3001` en producción.
+
+En ambos clientes (`react-chat` y `vue-chat`) la URL del socket se toma de la variable:
+
+- `VITE_SOCKET_URL`
+
+Ejemplo en Vercel (Environment Variables):
+
+- `VITE_SOCKET_URL=https://TU-SERVICIO-EN-RENDER.onrender.com`
+
+En Render, el servidor usa por defecto `process.env.PORT` (requerido por la plataforma) y permite configurar CORS con:
+
+- `CLIENT_ORIGIN=https://chat-tiempo-real-tau.vercel.app`
+
+Si queres habilitar más de un origen, separalos por coma:
+
+- `CLIENT_ORIGIN=https://chat-tiempo-real-tau.vercel.app,https://otro-front.vercel.app`
+
 ## Arquitectura utilizada
 
 La solución está separada en tres partes:
