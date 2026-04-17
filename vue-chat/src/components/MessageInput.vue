@@ -20,13 +20,6 @@
   const text = ref<string>("");
   const error = ref<string>("");
 
-  const user = ref<string>(localStorage.getItem("user") || "");
-
-  if (!user.value) {
-    user.value = prompt("Tu nombre") || "Anon";
-    localStorage.setItem("user", user.value);
-  }
-
   function send(): void {
     const avatar = localStorage.getItem("avatar");
 
@@ -39,7 +32,8 @@
     if (!text.value.trim()) return;
 
     error.value = "";
-    chat.sendMessage({ user: user.value, text: text.value, avatar });
+    const user = localStorage.getItem("user") || "Anon";
+    chat.sendMessage({ user, text: text.value, avatar });
     text.value = "";
   }
 </script>

@@ -1,10 +1,15 @@
 <template>
 
-  <div class="app">
+  <UsernameGate v-if="!ready" @ready="onReady" />
+
+  <div v-else class="app">
 
     <header class="app-header">
       <h1 class="app-title">Chat <span class="accent">Vue</span></h1>
-      <StatusIndicator />
+      <div class="header-actions">
+        <StatusIndicator />
+        <button class="change-user-button" @click="changeUser">Cambiar usuario</button>
+      </div>
     </header>
 
     <div class="app-body">
@@ -18,18 +23,49 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, onUnmounted } from "vue"
+  import { onUnmounted, ref } from "vue"
+  import Swal from "sweetalert2"
   import { useChatStore } from "./stores/chatStore"
   import StatusIndicator from "./components/StatusIndicator.vue"
   import ChatWindow from "./components/ChatWindow.vue"
   import MessageInput from "./components/MessageInput.vue"
   import AvatarSelector from "./components/AvatarSelector.vue"
+  import UsernameGate from "./components/UsernameGate.vue"
 
   const chat = useChatStore()
+  const ready = ref(Boolean(localStorage.getItem("user")))
 
-  onMounted(() => {
+  if (ready.value) {
     chat.init()
-  })
+  }
+
+  function onReady() {
+    ready.value = true
+    chat.init()
+  }
+
+  async function changeUser() {
+    const result = await Swal.fire({
+      title: "Cambiar usuario",
+      text: "Se borrara tu sesion local.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Si, continuar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#0284c7",
+      cancelButtonColor: "#475569",
+      reverseButtons: true,
+      background: "#0f172a",
+      color: "#e2e8f0"
+    })
+
+    if (!result.isConfirmed) return
+
+    localStorage.clear()
+    chat.cleanup()
+    chat.resetState()
+    ready.value = false
+  }
 
   onUnmounted(() => {
     chat.cleanup()
@@ -37,6 +73,16 @@
 </script>
 
 <style>
+.template {
+  background: red;
+}
+
+.body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: red;
+  color: #e2e8f0;
+}
 
 .app {
   --accent-color: #057e6c;
@@ -68,6 +114,26 @@
   padding: 16px 20px;
   background: #242424;
   border-bottom: 3px solid var(--accent-color);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.change-user-button {
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(15, 23, 42, 0.65);
+  color: #e2e8f0;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.change-user-button:hover {
+  border-color: rgba(var(--accent-rgb), 0.9);
 }
 
 .app-title {

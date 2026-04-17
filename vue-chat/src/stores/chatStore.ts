@@ -39,6 +39,7 @@ export const useChatStore = defineStore("chat", {
     init() {
       if (this.initialized) return; 
       this.initialized = true;
+      this.connected = socket.connected;
 
       socket.on("connect", () => {
         this.connected = true;
@@ -67,8 +68,23 @@ export const useChatStore = defineStore("chat", {
       this.initialized = false;
     },
 
+    resetState() {
+      this.messages = [];
+      this.connected = false;
+      this.error = "";
+      this.initialized = false;
+    },
+
     sendMessage(msg: Omit<Message, "id" | "time">) {
       socket.emit("message", msg);
+    },
+
+    reconnect() {
+      this.error = "";
+      if (!socket.connected) {
+        socket.connect();
+      }
+      this.connected = socket.connected;
     }
   }
 });

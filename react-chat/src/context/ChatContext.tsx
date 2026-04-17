@@ -14,6 +14,7 @@ interface ChatContextType {
   sendMessage: (msg: Omit<Message, "id" | "time">) => void;
   connected: boolean;
   error: string;
+  reconnect: () => void;
 }
 
 const ChatContext = createContext<ChatContextType | null>(null);
@@ -37,10 +38,13 @@ export const ChatProvider = ({ children }: any) => {
 
   });
 
-  const [connected, setConnected] = useState(false);
+  const [connected, setConnected] = useState(socket.connected);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    // Si el socket ya estaba conectado antes de montar el contexto,
+    // reflejamos ese estado para no mostrar "Desconectado" por error.
+    setConnected(socket.connected);
 
     socket.on("connect", () => {
       setConnected(true);
@@ -85,8 +89,15 @@ export const ChatProvider = ({ children }: any) => {
     socket.emit("message", msg);
   };
 
+  const reconnect = () => {
+    setError("");
+    if (!socket.connected) {
+      socket.connect();
+    }
+  };
+
   return (
-    <ChatContext.Provider value={{ messages, sendMessage, connected, error }}>
+    <ChatContext.Provider value={{ messages, sendMessage, connected, error, reconnect }}>
       {children}
     </ChatContext.Provider>
   );

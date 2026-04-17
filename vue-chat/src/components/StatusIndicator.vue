@@ -3,6 +3,16 @@
     <div class="status-badge" :class="chat.connected ? 'connected' : 'disconnected'">
       <span class="status-dot"></span>
       <span class="status-text">{{ chat.connected ? 'Conectado' : 'Desconectado' }}</span>
+      <button
+        v-if="!chat.connected"
+        type="button"
+        class="status-reload"
+        title="Reintentar conexión"
+        aria-label="Reintentar conexión"
+        @click="chat.reconnect()"
+      >
+        ↻
+      </button>
     </div>
     <div v-if="chat.error" class="status-error">{{ chat.error }}</div>
   </div>
@@ -60,6 +70,23 @@
 
   .disconnected .status-dot {
     background: #f87171;
+  }
+
+  .status-reload {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(248, 113, 113, 0.55);
+    background: rgba(127, 29, 29, 0.2);
+    color: #fecaca;
+    font-size: 0.8rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .status-reload:hover {
+    filter: brightness(1.08);
   }
 
   .status-error {

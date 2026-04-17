@@ -3,7 +3,7 @@
   --accent-color-hover: #535bf2;
   --accent-rgb: 100, 108, 255;
   width: min(540px, 100%);
-  min-height: 100vh;
+  min-height: min(720px, 100vh);
   margin: 0 auto;
   background: #12121a;
   display: flex;
@@ -13,7 +13,7 @@
 
 @media (min-width: 640px) {
   .app {
-    margin: 2rem auto;
+    margin: 1.5rem auto;
     border-radius: 16px;
     min-height: auto;
     overflow: hidden;
@@ -27,6 +27,26 @@
   padding: 14px 20px;
   background: #0f0f15;
   border-bottom: 2px solid var(--accent-color);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.change-user-button {
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(30, 41, 59, 0.65);
+  color: #e2e8f0;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.change-user-button:hover {
+  border-color: rgba(var(--accent-rgb), 0.9);
 }
 
 .app-title {
